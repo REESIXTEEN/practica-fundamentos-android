@@ -1,4 +1,4 @@
-package com.example.practica_fundamentos_android.view
+package com.example.practica_fundamentos_android.login
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +12,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        setContentView(R.layout.activity_login)
 
+        binding.button
 
     }
 }
