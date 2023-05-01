@@ -20,9 +20,16 @@ class LoginViewModel: ViewModel() {
 
     fun login(){
         checkCredentials()
-        if (true){
+        if (_loginStatus.value is LoginStatus.Idle){
             viewModelScope.launch {
-                network.login(email,password)
+                try {
+                    val result = network.login(email,password)
+                    _loginStatus.value = LoginStatus.TokenReceived
+                    saveToken(result)
+                }catch (e: Exception) {
+                    _loginStatus.value = LoginStatus.Error(e.message.toString())
+                }
+
             }
 
         }
@@ -32,11 +39,15 @@ class LoginViewModel: ViewModel() {
         if (email.isEmpty() || password.isEmpty()) _loginStatus.value = LoginStatus.CredentialsError
     }
 
+    private fun saveToken(token: String) {
+
+    }
+
 
     sealed class LoginStatus{
         object Idle : LoginStatus()
         data class Error(val error: String) : LoginStatus()
-        data class TokenReceived(val token: String) : LoginStatus()
+        object TokenReceived : LoginStatus()
         object CredentialsError : LoginStatus()
     }
 
