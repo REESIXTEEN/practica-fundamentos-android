@@ -35,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.loginStatus.collect {
                     when (it) {
                         is LoginViewModel.LoginStatus.TokenReceived -> {
+                            viewModel.saveToken(it.token, baseContext)
                             val intent = Intent(baseContext, MainActivity::class.java)
                             startActivity(intent)
                         }

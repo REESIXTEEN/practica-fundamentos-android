@@ -1,13 +1,14 @@
 package com.example.practica_fundamentos_android.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.practica_fundamentos_android.TOKEN_ID
 import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginViewModel: ViewModel() {
 
@@ -24,9 +25,8 @@ class LoginViewModel: ViewModel() {
         if(checkCredentials()){
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-                    val result = network.login(email,password)
-                    _loginStatus.value = LoginStatus.TokenReceived
-                    saveToken(result)
+                    val token = network.login(email,password)
+                    _loginStatus.value = LoginStatus.TokenReceived(token)
                 }catch (e: Exception) {
                     _loginStatus.value = LoginStatus.Error("Error during login. " + e.toString())
                 }
@@ -40,16 +40,20 @@ class LoginViewModel: ViewModel() {
         return email.isNotEmpty() && password.isNotEmpty()
     }
 
-    private fun saveToken(token: String) {
-        println(token)
+    fun saveToken(token: String, context: Context) {
+        context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+            .edit()
+            .putString(TOKEN_ID, token)
+            .apply()
     }
 
 
     sealed class LoginStatus{
         object Idle : LoginStatus()
         data class Error(val error: String) : LoginStatus()
-        object TokenReceived : LoginStatus()
+        data class TokenReceived(val token: String) : LoginStatus()
         object CredentialsError : LoginStatus()
+        object loading : LoginStatus()
     }
 
 }
