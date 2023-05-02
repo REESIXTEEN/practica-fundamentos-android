@@ -45,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(baseContext, "Email or password empty", Toast.LENGTH_LONG).show()
                         }
                         is LoginViewModel.LoginStatus.Idle -> Unit
-//                    else -> Unit
                     }
                 }
             }

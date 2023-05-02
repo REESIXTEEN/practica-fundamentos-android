@@ -24,9 +24,6 @@ class LoginViewModel: ViewModel() {
         if(checkCredentials()){
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-//                    val result = withContext(Dispatchers.IO) {
-//                        network.login(email, password)
-//                    }
                     val result = network.login(email,password)
                     _loginStatus.value = LoginStatus.TokenReceived
                     saveToken(result)
