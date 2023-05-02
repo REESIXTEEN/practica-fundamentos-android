@@ -10,18 +10,19 @@ import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel(): ViewModel() {
+class MainActivityViewModel(val context: Context, val caca:String): ViewModel() {
 
     private val network: Network = Network()
     private lateinit var token: String
     var heroes: List<Heroe> = listOf()
 
     init {
+        getToken()
         getHeroes()
     }
 
 
-    private fun getToken(context: Context) {
+    private fun getToken() {
         context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
             .getString(TOKEN_ID, "")
     }
