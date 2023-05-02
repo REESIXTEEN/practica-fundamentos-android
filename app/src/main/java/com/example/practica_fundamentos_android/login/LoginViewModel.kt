@@ -3,9 +3,11 @@ package com.example.practica_fundamentos_android.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practica_fundamentos_android.network.Network
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel: ViewModel() {
 
@@ -19,28 +21,30 @@ class LoginViewModel: ViewModel() {
 
 
     fun login(){
-        checkCredentials()
-        if (_loginStatus.value is LoginStatus.Idle){
-            viewModelScope.launch {
+        if(checkCredentials()){
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
+//                    val result = withContext(Dispatchers.IO) {
+//                        network.login(email, password)
+//                    }
                     val result = network.login(email,password)
                     _loginStatus.value = LoginStatus.TokenReceived
                     saveToken(result)
                 }catch (e: Exception) {
-                    _loginStatus.value = LoginStatus.Error(e.message.toString())
+                    _loginStatus.value = LoginStatus.Error("Error during login. " + e.toString())
                 }
-
             }
-
+        }else {
+            _loginStatus.value = LoginStatus.CredentialsError
         }
     }
 
-    private fun checkCredentials() {
-        if (email.isEmpty() || password.isEmpty()) _loginStatus.value = LoginStatus.CredentialsError
+    private fun checkCredentials(): Boolean {
+        return email.isNotEmpty() && password.isNotEmpty()
     }
 
     private fun saveToken(token: String) {
-
+        println(token)
     }
 
 

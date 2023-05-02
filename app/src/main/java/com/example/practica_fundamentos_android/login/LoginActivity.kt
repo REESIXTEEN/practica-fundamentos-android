@@ -6,9 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.practica_fundamentos_android.databinding.ActivityLoginBinding
 import com.example.practica_fundamentos_android.main.MainActivity
+
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -28,21 +31,22 @@ class LoginActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.loginStatus.collect{
-                when (it){
-                    is LoginViewModel.LoginStatus.TokenReceived ->  {
-                        val intent = Intent(baseContext, MainActivity::class.java)
-                        startActivity(intent)
-
-                    }
-                    is LoginViewModel.LoginStatus.Error -> {
-
-                    }
-                    is LoginViewModel.LoginStatus.CredentialsError -> {
-                        Toast.makeText(baseContext, "Email or password invalid", Toast.LENGTH_LONG).show()
-                    }
-                    is LoginViewModel.LoginStatus.Idle -> Unit
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.loginStatus.collect {
+                    when (it) {
+                        is LoginViewModel.LoginStatus.TokenReceived -> {
+                            val intent = Intent(baseContext, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                        is LoginViewModel.LoginStatus.Error -> {
+                            Toast.makeText(baseContext, it.error, Toast.LENGTH_LONG).show()
+                        }
+                        is LoginViewModel.LoginStatus.CredentialsError -> {
+                            Toast.makeText(baseContext, "Email or password empty", Toast.LENGTH_LONG).show()
+                        }
+                        is LoginViewModel.LoginStatus.Idle -> Unit
 //                    else -> Unit
+                    }
                 }
             }
         }
