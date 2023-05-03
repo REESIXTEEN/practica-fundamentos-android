@@ -3,7 +3,6 @@ package com.example.practica_fundamentos_android.login
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.practica_fundamentos_android.TOKEN_ID
 import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,9 +19,9 @@ class LoginViewModel: ViewModel() {
     private val _loginStatus = MutableStateFlow<LoginStatus>(LoginStatus.Idle)
     val loginStatus: StateFlow<LoginStatus> = _loginStatus
 
-
     fun login(){
         if(checkCredentials()){
+            _loginStatus.value = LoginStatus.Loading
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val token = network.login(email,password)
@@ -43,8 +42,12 @@ class LoginViewModel: ViewModel() {
     fun saveToken(token: String, context: Context) {
         context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
             .edit()
-            .putString(TOKEN_ID, token)
+            .putString("token", token)
             .apply()
+    }
+
+    fun isLogged(context: Context): Boolean {
+        return !context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("token", "").isNullOrEmpty()
     }
 
 
@@ -53,7 +56,7 @@ class LoginViewModel: ViewModel() {
         data class Error(val error: String) : LoginStatus()
         data class TokenReceived(val token: String) : LoginStatus()
         object CredentialsError : LoginStatus()
-        object loading : LoginStatus()
+        object Loading : LoginStatus()
     }
 
 }

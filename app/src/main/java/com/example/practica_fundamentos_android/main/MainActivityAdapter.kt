@@ -7,7 +7,7 @@ import com.example.practica_fundamentos_android.databinding.CardHeroeBinding
 import com.example.practica_fundamentos_android.model.Heroe
 
 class MainActivityAdapter(
-    private val listHeroes: List<Heroe>
+    var listHeroes: List<Heroe>
 ): RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder>() {
 
 

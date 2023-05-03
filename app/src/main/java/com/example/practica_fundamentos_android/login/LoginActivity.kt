@@ -3,6 +3,7 @@ package com.example.practica_fundamentos_android.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if(viewModel.isLogged(this)) {
+            val intent = Intent(baseContext, MainActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.button.setOnClickListener {
             viewModel.email = binding.email.text.toString()
             viewModel.password = binding.password.text.toString()
@@ -40,12 +46,18 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(intent)
                         }
                         is LoginViewModel.LoginStatus.Error -> {
+                            binding.loginLoading.visibility = View.GONE
                             Toast.makeText(baseContext, it.error, Toast.LENGTH_LONG).show()
                         }
                         is LoginViewModel.LoginStatus.CredentialsError -> {
+                            binding.loginLoading.visibility = View.GONE
                             Toast.makeText(baseContext, "Email or password empty", Toast.LENGTH_LONG).show()
                         }
+                        is LoginViewModel.LoginStatus.Loading -> {
+                            binding.loginLoading.visibility = View.VISIBLE
+                        }
                         is LoginViewModel.LoginStatus.Idle -> Unit
+                        else -> Unit
                     }
                 }
             }

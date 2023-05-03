@@ -4,37 +4,47 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.practica_fundamentos_android.login.LoginViewModel
 import com.example.practica_fundamentos_android.model.Heroe
 import com.example.practica_fundamentos_android.model.HeroeDTO
 import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel(val context: Context, val caca:String): ViewModel() {
+class MainActivityViewModel(): ViewModel() {
 
     private val network: Network = Network()
     private lateinit var token: String
     var heroes: List<Heroe> = listOf()
 
-    init {
-        getToken()
-        getHeroes()
+    private val _mainStatus = MutableStateFlow<MainStatus>(MainStatus.Loading)
+    val mainStatus: StateFlow<MainStatus> = _mainStatus
+
+
+    fun getToken(context: Context) {
+        token = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("token", "").toString()
     }
 
-
-    private fun getToken() {
-        context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-            .getString(TOKEN_ID, "")
-    }
-
-    private fun getHeroes() {
+    fun getHeroes() {
+        _mainStatus.value = MainStatus.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            heroes = network.getHeroes(token)
-//            heroes.forEach {
-//                Log.i("TAG", it.name)
-//            }
+            try {
+                heroes = network.getHeroes(token)
+                _mainStatus.value = MainStatus.Error("Something went wrong. ")
+            }catch (e: Exception) {
+                _mainStatus.value = MainStatus.Error("Something went wrong. " + e.toString())
+            }
 
         }
 
     }
+
+    sealed class MainStatus{
+        object Loading : MainStatus()
+        data class Error(val error: String) : MainStatus()
+        object Success : MainStatus()
+    }
 }
+
