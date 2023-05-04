@@ -3,8 +3,10 @@ package com.example.practica_fundamentos_android.main
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.CardHeroeBinding
 import com.example.practica_fundamentos_android.model.Heroe
+import com.squareup.picasso.Picasso
 
 class MainActivityAdapter(
     var listHeroes: List<Heroe>
@@ -16,6 +18,7 @@ class MainActivityAdapter(
             item.heroeName.text = heroe.name
             item.progressBarLife.max = heroe.vidaTotal
             item.progressBarLife.progress = heroe.vidaRestante
+            Picasso.get().load(heroe.photo).placeholder(R.drawable.baseline_person_24).into(item.imageView);
 
 //            item.tvName.text = personaje.nombre
 //            item.tvAge.text = personaje.edad.toString()

@@ -18,9 +18,7 @@ class MainActivityViewModel(): ViewModel() {
 
     private val network: Network = Network()
     private lateinit var token: String
-    var heroes: List<Heroe> = listOf(
-        Heroe("caca","",100,80)
-    )
+    var heroes: List<Heroe> = listOf()
 
     private val _mainStatus = MutableStateFlow<MainStatus>(MainStatus.Loading)
     val mainStatus: StateFlow<MainStatus> = _mainStatus
