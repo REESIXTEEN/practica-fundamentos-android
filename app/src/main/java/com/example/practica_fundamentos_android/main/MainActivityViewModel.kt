@@ -11,13 +11,16 @@ import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(): ViewModel() {
 
     private val network: Network = Network()
     private lateinit var token: String
-    var heroes: List<Heroe> = listOf()
+    var heroes: List<Heroe> = listOf(
+        Heroe("caca","",100,80)
+    )
 
     private val _mainStatus = MutableStateFlow<MainStatus>(MainStatus.Loading)
     val mainStatus: StateFlow<MainStatus> = _mainStatus
@@ -32,16 +35,16 @@ class MainActivityViewModel(): ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 heroes = network.getHeroes(token)
-                _mainStatus.value = MainStatus.Error("Something went wrong. ")
+                _mainStatus.update { MainStatus.Success }
             }catch (e: Exception) {
-                _mainStatus.value = MainStatus.Error("Something went wrong. " + e.toString())
+                _mainStatus.value = MainStatus.Error("Something went wrong. $e")
             }
 
         }
 
     }
 
-    sealed class MainStatus{
+    sealed class MainStatus {
         object Loading : MainStatus()
         data class Error(val error: String) : MainStatus()
         object Success : MainStatus()

@@ -22,13 +22,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         if(viewModel.isLogged(this)) {
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
         }
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.button.setOnClickListener {
             viewModel.email = binding.email.text.toString()
@@ -44,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                             viewModel.saveToken(it.token, baseContext)
                             val intent = Intent(baseContext, MainActivity::class.java)
                             startActivity(intent)
+                            finish()
                         }
                         is LoginViewModel.LoginStatus.Error -> {
                             binding.loginLoading.visibility = View.GONE

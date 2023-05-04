@@ -10,7 +10,6 @@ class MainActivityAdapter(
     var listHeroes: List<Heroe>
 ): RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder>() {
 
-
     class MainActivityViewHolder(private var item: CardHeroeBinding) : RecyclerView.ViewHolder(item.root) {
 
         fun showPersonaje(heroe: Heroe) {
