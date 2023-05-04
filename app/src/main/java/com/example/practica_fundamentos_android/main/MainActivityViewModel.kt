@@ -28,6 +28,12 @@ class MainActivityViewModel(): ViewModel() {
         token = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("token", "").toString()
     }
 
+    fun deleteToken(context: Context) {
+        context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+            .edit()
+            .remove("token")
+            .apply()
+    }
     fun getHeroes() {
         _mainStatus.value = MainStatus.Loading
         viewModelScope.launch(Dispatchers.IO) {

@@ -70,8 +70,12 @@ class FragmentTable : Fragment(), HeroeClicked {
 
     override fun clicked(heroe: Heroe) {
         val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragmentContainerView, FragmentFight(heroe)).commit()
+        fragmentManager.beginTransaction()
+            .add(R.id.fragmentContainerView, FragmentFight(heroe))
+            .addToBackStack("stack")
+            .commit()
+
+
     }
 
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.FragmentFightBinding
@@ -19,16 +20,13 @@ class FragmentFight(val heroe: Heroe) : Fragment() {
     private lateinit var binding: FragmentFightBinding
     private val viewModel : MainActivityViewModel by viewModels()
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        // This callback will only be called when MyFragment is at least Started.
-//        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-//            // Handle the back button event
-//        }
-//
-//        // The callback can be enabled or disabled here or in the lambda
-//    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +49,8 @@ class FragmentFight(val heroe: Heroe) : Fragment() {
 
 
         binding.healBtn.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack() }
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
     }
 

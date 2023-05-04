@@ -1,5 +1,7 @@
 package com.example.practica_fundamentos_android.main
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.ActivityMainBinding
+import com.example.practica_fundamentos_android.login.LoginActivity
 import com.example.practica_fundamentos_android.login.LoginViewModel
 import com.example.practica_fundamentos_android.main.fragments.FragmentTable
 import kotlinx.coroutines.launch
@@ -33,6 +36,13 @@ class MainActivity : AppCompatActivity() {
             .commitNow()
 
         binding.logOutBtn.setOnClickListener {
+            viewModel.deleteToken(this)
+            val intent = Intent(baseContext, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.restartBtn.setOnClickListener {
             print("")
         }
 
