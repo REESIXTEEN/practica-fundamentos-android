@@ -1,24 +1,26 @@
 package com.example.practica_fundamentos_android.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.FragmentTableBinding
-import com.example.practica_fundamentos_android.main.MainActivityAdapter
 import com.example.practica_fundamentos_android.main.MainActivityViewModel
+import com.example.practica_fundamentos_android.model.Heroe
 import kotlinx.coroutines.launch
 
 
-class FragmentTable : Fragment() {
+class FragmentTable : Fragment(), HeroeClicked {
 
     private lateinit var binding: FragmentTableBinding
     private val viewModel : MainActivityViewModel by viewModels()
@@ -35,7 +37,7 @@ class FragmentTable : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MainActivityAdapter(viewModel.heroes)
+        val adapter = FragmentTableAdapter(viewModel.heroes,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
 
@@ -64,6 +66,12 @@ class FragmentTable : Fragment() {
 
         viewModel.getToken(requireContext())
         viewModel.getHeroes()
+    }
+
+    override fun clicked(heroe: Heroe) {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.fragmentContainerView, FragmentFight(heroe)).commit()
     }
 
 }

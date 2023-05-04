@@ -9,8 +9,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.ActivityMainBinding
 import com.example.practica_fundamentos_android.login.LoginViewModel
+import com.example.practica_fundamentos_android.main.fragments.FragmentTable
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +24,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(binding.fragmentContainerView.id, FragmentTable())
+            .commitNow()
+
+        binding.logOutBtn.setOnClickListener {
+            print("")
+        }
 
     }
 }

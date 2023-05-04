@@ -1,4 +1,4 @@
-package com.example.practica_fundamentos_android.main
+package com.example.practica_fundamentos_android.main.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,25 +8,24 @@ import com.example.practica_fundamentos_android.databinding.CardHeroeBinding
 import com.example.practica_fundamentos_android.model.Heroe
 import com.squareup.picasso.Picasso
 
-class MainActivityAdapter(
-    var listHeroes: List<Heroe>
-): RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder>() {
+
+interface HeroeClicked {
+    fun clicked(heroe: Heroe)
+}
+
+class FragmentTableAdapter(
+    var listHeroes: List<Heroe>,
+    private val heroeClicked: HeroeClicked
+): RecyclerView.Adapter<FragmentTableAdapter.MainActivityViewHolder>() {
 
     class MainActivityViewHolder(private var item: CardHeroeBinding) : RecyclerView.ViewHolder(item.root) {
 
-        fun showPersonaje(heroe: Heroe) {
+        fun showHeroe(heroe: Heroe) {
             item.heroeName.text = heroe.name
+            item.heroeLifeText.text = "Vida ${heroe.vidaRestante} / ${heroe.vidaTotal}"
             item.progressBarLife.max = heroe.vidaTotal
             item.progressBarLife.progress = heroe.vidaRestante
             Picasso.get().load(heroe.photo).placeholder(R.drawable.baseline_person_24).into(item.imageView);
-
-//            item.tvName.text = personaje.nombre
-//            item.tvAge.text = personaje.edad.toString()
-
-//            item.lBackground.setOnClickListener {
-//                Toast.makeText(item.root.context, "Pulsado sobre ${personaje.nombre}", Toast.LENGTH_LONG).show()
-//                callback.personajeClicked(personaje)
-//            }
         }
     }
 
@@ -44,7 +43,11 @@ class MainActivityAdapter(
     }
 
     override fun onBindViewHolder(holder: MainActivityViewHolder, position: Int) {
-        holder.showPersonaje(listHeroes[position])
+        holder.showHeroe(listHeroes[position])
+
+        holder.itemView.setOnClickListener {
+            heroeClicked.clicked(listHeroes[position])
+        }
     }
 
 

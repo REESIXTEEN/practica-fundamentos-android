@@ -1,62 +1,62 @@
 package com.example.practica_fundamentos_android.main.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.practica_fundamentos_android.R
+import com.example.practica_fundamentos_android.databinding.FragmentFightBinding
+import com.example.practica_fundamentos_android.main.MainActivityViewModel
+import com.example.practica_fundamentos_android.model.Heroe
+import com.squareup.picasso.Picasso
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentFight.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FragmentFight : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class FragmentFight(val heroe: Heroe) : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
+    private lateinit var binding: FragmentFightBinding
+    private val viewModel : MainActivityViewModel by viewModels()
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        // This callback will only be called when MyFragment is at least Started.
+//        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+//            // Handle the back button event
 //        }
-
-
-    }
+//
+//        // The callback can be enabled or disabled here or in the lambda
+//    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fight, container, false)
+    ): View {
+        binding = FragmentFightBinding.inflate(inflater)
+        return binding.root
     }
 
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment fragment_figth.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            FragmentFight().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Picasso.get().load(heroe.photo).placeholder(R.drawable.baseline_person_24).into(binding.image);
+        binding.heroeName.text = heroe.name
+        binding.progressBarLife.max = heroe.vidaTotal
+        binding.progressBarLife.progress = heroe.vidaRestante
+        binding.lifeText.text = "Vida ${heroe.vidaRestante} / ${heroe.vidaTotal}"
+
+
+        binding.healBtn.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack() }
+
+    }
+
+
+
+
+
 }

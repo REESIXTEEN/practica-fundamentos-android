@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
         if(viewModel.isLogged(this)) {
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
