@@ -4,5 +4,5 @@ data class Heroe(
     val name : String,
     val photo: String,
     val vidaTotal: Int,
-    val vidaRestante: Int
+    var vidaRestante: Int
 )

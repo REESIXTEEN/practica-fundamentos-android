@@ -68,10 +68,10 @@ class FragmentTable : Fragment(), HeroeClicked {
         viewModel.getHeroes()
     }
 
-    override fun clicked(heroe: Heroe) {
+    override fun clicked(pos: Int) {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainerView, FragmentFight(heroe))
+            .add(R.id.fragmentContainerView, FragmentFight(pos))
             .addToBackStack("stack")
             .commit()
 

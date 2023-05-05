@@ -13,17 +13,23 @@ import com.example.practica_fundamentos_android.databinding.FragmentFightBinding
 import com.example.practica_fundamentos_android.main.MainActivityViewModel
 import com.example.practica_fundamentos_android.model.Heroe
 import com.squareup.picasso.Picasso
+import kotlin.random.Random
 
+const val HEAL = 20
+const val MIN_DAMAGE = 10
+const val MAX_DAMAGE = 60
 
-class FragmentFight(val heroe: Heroe) : Fragment() {
+class FragmentFight(val pos: Int) : Fragment() {
 
     private lateinit var binding: FragmentFightBinding
     private val viewModel : MainActivityViewModel by viewModels()
+    private lateinit var heroe: Heroe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
+            updateHeroeData()
             requireActivity().supportFragmentManager.popBackStack()
         }
     }
@@ -41,20 +47,50 @@ class FragmentFight(val heroe: Heroe) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        heroe = viewModel.heroes[pos]
         Picasso.get().load(heroe.photo).placeholder(R.drawable.baseline_person_24).into(binding.image);
         binding.heroeName.text = heroe.name
         binding.progressBarLife.max = heroe.vidaTotal
-        binding.progressBarLife.progress = heroe.vidaRestante
-        binding.lifeText.text = "Vida ${heroe.vidaRestante} / ${heroe.vidaTotal}"
+        updateUI()
 
 
         binding.healBtn.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            healHeroe()
+            updateUI()
+        }
+
+        binding.damageBtn.setOnClickListener {
+            damageHeroe()
+            updateUI()
         }
 
     }
 
+    private fun updateHeroeData() {
+        viewModel.heroes[pos].vidaRestante = heroe.vidaRestante
+    }
 
+    private fun updateUI() {
+        binding.progressBarLife.progress = heroe.vidaRestante
+        binding.lifeText.text = "Vida ${heroe.vidaRestante} / ${heroe.vidaTotal}"
+    }
+
+    private fun healHeroe(){
+        heroe.vidaRestante = heroe.vidaRestante + HEAL
+        if(heroe.vidaRestante > heroe.vidaTotal){
+            heroe.vidaRestante = heroe.vidaTotal
+        }
+    }
+
+    private fun damageHeroe(){
+        val damage = Random.nextInt(MIN_DAMAGE, MAX_DAMAGE)
+        heroe.vidaRestante = heroe.vidaRestante - damage
+        if(heroe.vidaRestante <= 0){
+            heroe.vidaRestante = 0
+            updateHeroeData()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
 
 
 

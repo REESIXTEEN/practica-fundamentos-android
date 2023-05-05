@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 
 
 interface HeroeClicked {
-    fun clicked(heroe: Heroe)
+    fun clicked(pos: Int)
 }
 
 class FragmentTableAdapter(
@@ -46,7 +46,7 @@ class FragmentTableAdapter(
         holder.showHeroe(listHeroes[position])
 
         holder.itemView.setOnClickListener {
-            heroeClicked.clicked(listHeroes[position])
+            heroeClicked.clicked(position)
         }
     }
 
