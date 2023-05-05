@@ -22,7 +22,6 @@ const val MAX_DAMAGE = 60
 class FragmentFight(private val viewModel: MainActivityViewModel, private val pos: Int) : Fragment() {
 
     private lateinit var binding: FragmentFightBinding
-//    private val viewModel : MainActivityViewModel by viewModels()
     private lateinit var heroe: Heroe
 
     override fun onCreate(savedInstanceState: Bundle?) {

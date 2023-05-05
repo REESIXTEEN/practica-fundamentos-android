@@ -15,15 +15,25 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.FragmentTableBinding
+import com.example.practica_fundamentos_android.main.MainActivity
 import com.example.practica_fundamentos_android.main.MainActivityViewModel
 import com.example.practica_fundamentos_android.model.Heroe
+import com.example.practica_fundamentos_android.network.LIFE
 import kotlinx.coroutines.launch
 
 
 class FragmentTable(private val viewModel: MainActivityViewModel) : Fragment(), HeroeClicked {
 
     private lateinit var binding: FragmentTableBinding
-//    private val viewModel : MainActivityViewModel by viewModels()
+    private val adapter = FragmentTableAdapter(viewModel.heroes,this)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.getToken(requireContext())
+        viewModel.getHeroes()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +47,6 @@ class FragmentTable(private val viewModel: MainActivityViewModel) : Fragment(), 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = FragmentTableAdapter(viewModel.heroes,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
 
@@ -64,18 +73,22 @@ class FragmentTable(private val viewModel: MainActivityViewModel) : Fragment(), 
             }
         }
 
-        viewModel.getToken(requireContext())
-        viewModel.getHeroes()
+        (requireActivity() as MainActivity).binding.restartBtn.setOnClickListener {
+            for (heroe in viewModel.heroes){
+                heroe.vidaRestante = LIFE
+            }
+            adapter.notifyDataSetChanged()
+        }
+
+
     }
 
     override fun clicked(pos: Int) {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainerView, FragmentFight(viewModel, pos))
-            .addToBackStack("stack")
+            .replace(R.id.fragmentContainerView, FragmentFight(viewModel, pos))
+            .addToBackStack(null)
             .commit()
-
-
     }
 
 }

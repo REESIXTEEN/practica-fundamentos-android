@@ -26,6 +26,9 @@ class FragmentTableAdapter(
             item.progressBarLife.max = heroe.vidaTotal
             item.progressBarLife.progress = heroe.vidaRestante
             Picasso.get().load(heroe.photo).placeholder(R.drawable.baseline_person_24).into(item.imageView);
+            if(heroe.vidaRestante <= 0){
+                item.imageAvailable.setImageResource(R.drawable.baseline_cancel_24)
+            }else item.imageAvailable.setImageResource(R.drawable.baseline_circle_24)
         }
     }
 

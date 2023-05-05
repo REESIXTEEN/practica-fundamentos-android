@@ -28,12 +28,12 @@
             android:text="Heroe Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageAvalaible"
+            app:layout_constraintEnd_toStartOf="@+id/imageAvailable"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageAvalaible"
+            android:id="@+id/imageAvailable"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="8dp"

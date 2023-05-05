@@ -8,6 +8,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Credentials
 
+const val LIFE = 100
+
 class Network {
 
     fun login(email: String, password: String): String {
@@ -48,7 +50,7 @@ class Network {
         if(response.code == 200) {
             val gson = Gson()
             val dtoHeroes = gson.fromJson(response.body?.string() ?: "", Array<HeroeDTO>::class.java)
-            return dtoHeroes.toList().map { Heroe(it.name, it.photo, 100, 100) }
+            return dtoHeroes.toList().map { Heroe(it.name, it.photo, LIFE, LIFE) }
         }
         else throw Exception("Error code: ${response.code}")
 

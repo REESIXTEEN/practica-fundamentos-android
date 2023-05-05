@@ -16,11 +16,12 @@ import com.example.practica_fundamentos_android.databinding.ActivityMainBinding
 import com.example.practica_fundamentos_android.login.LoginActivity
 import com.example.practica_fundamentos_android.login.LoginViewModel
 import com.example.practica_fundamentos_android.main.fragments.FragmentTable
+import com.example.practica_fundamentos_android.network.LIFE
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private val viewModel : MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +43,11 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.restartBtn.setOnClickListener {
-            print("")
-        }
+//        binding.restartBtn.setOnClickListener {
+//            for (heroe in viewModel.heroes){
+//                heroe.vidaRestante = LIFE
+//            }
+//        }
 
     }
 }
