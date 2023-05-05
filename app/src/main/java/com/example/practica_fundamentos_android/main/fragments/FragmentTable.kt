@@ -20,10 +20,10 @@ import com.example.practica_fundamentos_android.model.Heroe
 import kotlinx.coroutines.launch
 
 
-class FragmentTable : Fragment(), HeroeClicked {
+class FragmentTable(private val viewModel: MainActivityViewModel) : Fragment(), HeroeClicked {
 
     private lateinit var binding: FragmentTableBinding
-    private val viewModel : MainActivityViewModel by viewModels()
+//    private val viewModel : MainActivityViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +71,7 @@ class FragmentTable : Fragment(), HeroeClicked {
     override fun clicked(pos: Int) {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainerView, FragmentFight(pos))
+            .add(R.id.fragmentContainerView, FragmentFight(viewModel, pos))
             .addToBackStack("stack")
             .commit()
 

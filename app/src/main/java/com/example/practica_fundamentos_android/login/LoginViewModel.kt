@@ -27,7 +27,7 @@ class LoginViewModel: ViewModel() {
                     val token = network.login(email,password)
                     _loginStatus.value = LoginStatus.TokenReceived(token)
                 }catch (e: Exception) {
-                    _loginStatus.value = LoginStatus.Error("Error during login. " + e.toString())
+                    _loginStatus.value = LoginStatus.Error("Error during login. $e")
                 }
             }
         }else {

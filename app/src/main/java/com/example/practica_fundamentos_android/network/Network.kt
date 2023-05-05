@@ -10,7 +10,6 @@ import okhttp3.Credentials
 
 class Network {
 
-
     fun login(email: String, password: String): String {
         val client = OkHttpClient()
         val url = "https://dragonball.keepcoding.education//api/auth/login"
@@ -24,7 +23,10 @@ class Network {
 
         val call = client.newCall(request)
         val response = call.execute()
-        return response.body?.string() ?: ""
+        return if(response.code == 200)
+            response.body?.string() ?: throw Exception("Login Error ${response.body.toString()}")
+        else
+            throw Exception("Login Error code ${response.code}")
 
     }
 
@@ -43,18 +45,13 @@ class Network {
 
         val call = client.newCall(request)
         val response = call.execute()
-        val gson = Gson()
-        val dtoHeroes =  gson.fromJson(response.body?.string() ?: "", Array<HeroeDTO>::class.java)
-        return dtoHeroes.toList().map { Heroe(it.name, it.photo, 100,100) }
+        if(response.code == 200) {
+            val gson = Gson()
+            val dtoHeroes = gson.fromJson(response.body?.string() ?: "", Array<HeroeDTO>::class.java)
+            return dtoHeroes.toList().map { Heroe(it.name, it.photo, 100, 100) }
+        }
+        else throw Exception("Error code: ${response.code}")
 
-//        response.body?.let { responseBody -> val gson = Gson()
-//            try {
-//                val a =  gson.fromJson(responseBody.string(), Array<HeroeDTO>::class.java)
-//                return a
-//            } catch (ex: Exception) {
-//                return arrayOf()
-//            }
-//        } ?: run { return arrayOf() }
 
     }
 

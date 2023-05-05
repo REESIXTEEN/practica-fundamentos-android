@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(binding.fragmentContainerView.id, FragmentTable())
+            .replace(binding.fragmentContainerView.id, FragmentTable(viewModel))
             .commitNow()
 
         binding.logOutBtn.setOnClickListener {
