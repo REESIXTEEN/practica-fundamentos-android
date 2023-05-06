@@ -53,17 +53,19 @@ class MainActivityViewModel(): ViewModel() {
     }
 
     fun healHeroe(pos: Int) {
-        heroes[pos].vidaRestante = heroes[pos].vidaRestante + HEAL
-        if(heroes[pos].vidaRestante > heroes[pos].vidaTotal){
-            heroes[pos].vidaRestante = heroes[pos].vidaTotal
+        val heroe = heroes[pos]
+        heroe.vidaRestante = heroe.vidaRestante + HEAL
+        if(heroe.vidaRestante > heroe.vidaTotal){
+            heroe.vidaRestante = heroe.vidaTotal
         }
     }
 
     fun damageHeroe(pos: Int) {
         val damage = Random.nextInt(MIN_DAMAGE, MAX_DAMAGE)
-        heroes[pos].vidaRestante = heroes[pos].vidaRestante - damage
-        if(heroes[pos].vidaRestante <= 0) {
-            heroes[pos].vidaRestante = 0
+        val heroe = heroes[pos]
+        heroe.vidaRestante = heroe.vidaRestante - damage
+        if(heroe.vidaRestante <= 0) {
+            heroe.vidaRestante = 0
         }
     }
 
