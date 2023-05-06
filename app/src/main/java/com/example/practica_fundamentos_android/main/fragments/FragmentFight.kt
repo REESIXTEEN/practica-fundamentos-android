@@ -28,7 +28,10 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        heroe = viewModel.heroes[pos]
+
         (requireActivity() as MainActivity).binding.restartBtn.visibility = View.GONE
+        (requireActivity() as MainActivity).binding.toolbar.title = heroe.name
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             updateHeroeData()
@@ -49,7 +52,6 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        heroe = viewModel.heroes[pos]
         Picasso.get().load(heroe.photo).placeholder(R.drawable.baseline_person_24).into(binding.image);
         binding.heroeName.text = heroe.name
         binding.progressBarLife.max = heroe.vidaTotal
@@ -96,6 +98,7 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
     private fun goBack(){
         requireActivity().supportFragmentManager.popBackStack()
         (requireActivity() as MainActivity).binding.restartBtn.visibility = View.VISIBLE
+        (requireActivity() as MainActivity).binding.toolbar.title = "Heroes"
 
     }
 
