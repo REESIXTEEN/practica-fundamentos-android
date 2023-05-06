@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Heroe Name"
+        tools:text="Heroe Name"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="80 / 100"
+        tools:text="80 / 100"
         android:textAlignment="center" />
 
     <LinearLayout
@@ -57,7 +57,7 @@
             android:layout_weight="1"
             android:backgroundTint="#009688"
             android:drawableBottom="@drawable/baseline_health"
-            android:text="Curarse" />
+            android:text="@string/curarse_btn" />
 
         <Button
             android:id="@+id/damageBtn"
@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:backgroundTint="#F44336"
             android:drawableBottom="@drawable/baseline_bolt_24"
-            android:text="Recibir daño" />
+            android:text="@string/damage_btn" />
 
     </LinearLayout>
 

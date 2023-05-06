@@ -84,11 +84,14 @@ class FragmentTable(private val viewModel: MainActivityViewModel) : Fragment(), 
     }
 
     override fun clicked(pos: Int) {
-        val fragmentManager = requireActivity().supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, FragmentFight(viewModel, pos))
-            .addToBackStack(null)
-            .commit()
+        if(viewModel.heroes[pos].vidaRestante > 0){
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.beginTransaction()
+//                .setCustomAnimations(androidx.appcompat.R.anim.abc_slide_in_top,androidx.appcompat.R.anim.abc_slide_out_top)
+                .replace(R.id.fragmentContainerView, FragmentFight(viewModel, pos))
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
 }

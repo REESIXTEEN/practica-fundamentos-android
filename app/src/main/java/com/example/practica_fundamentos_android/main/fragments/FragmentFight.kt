@@ -29,7 +29,7 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             updateHeroeData()
-            requireActivity().supportFragmentManager.popBackStack()
+            goBack()
         }
     }
 
@@ -51,7 +51,6 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
         binding.heroeName.text = heroe.name
         binding.progressBarLife.max = heroe.vidaTotal
         updateUI()
-
 
         binding.healBtn.setOnClickListener {
             healHeroe()
@@ -87,8 +86,13 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
         if(heroe.vidaRestante <= 0){
             heroe.vidaRestante = 0
             updateHeroeData()
-            requireActivity().supportFragmentManager.popBackStack()
+            goBack()
         }
+    }
+
+    private fun goBack(){
+        requireActivity().supportFragmentManager.popBackStack()
+
     }
 
 

@@ -1,12 +1,11 @@
 package com.example.practica_fundamentos_android.main
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.practica_fundamentos_android.login.LoginViewModel
 import com.example.practica_fundamentos_android.model.Heroe
-import com.example.practica_fundamentos_android.model.HeroeDTO
 import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,19 +33,21 @@ class MainActivityViewModel(): ViewModel() {
             .remove("token")
             .apply()
     }
+
     fun getHeroes() {
         _mainStatus.value = MainStatus.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 heroes = network.getHeroes(token)
+                Log.i("TAG", "Heroes obtained from api")
                 _mainStatus.update { MainStatus.Success }
             }catch (e: Exception) {
                 _mainStatus.value = MainStatus.Error("Something went wrong. $e")
             }
-
         }
 
     }
+
 
     sealed class MainStatus {
         object Loading : MainStatus()

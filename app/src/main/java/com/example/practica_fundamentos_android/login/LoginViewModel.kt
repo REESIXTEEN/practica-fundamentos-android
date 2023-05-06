@@ -1,6 +1,7 @@
 package com.example.practica_fundamentos_android.login
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practica_fundamentos_android.network.Network
@@ -25,6 +26,7 @@ class LoginViewModel: ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val token = network.login(email,password)
+                    Log.i("TAG", "Token obtained from api")
                     _loginStatus.value = LoginStatus.TokenReceived(token)
                 }catch (e: Exception) {
                     _loginStatus.value = LoginStatus.Error("Error during login. $e")

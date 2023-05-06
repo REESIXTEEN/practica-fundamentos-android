@@ -43,11 +43,5 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-//        binding.restartBtn.setOnClickListener {
-//            for (heroe in viewModel.heroes){
-//                heroe.vidaRestante = LIFE
-//            }
-//        }
-
     }
 }
