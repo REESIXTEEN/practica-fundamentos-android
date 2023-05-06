@@ -1,6 +1,5 @@
 package com.example.practica_fundamentos_android.main
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.random.Random
+
+const val HEAL = 20
+const val MIN_DAMAGE = 10
+const val MAX_DAMAGE = 60
 
 class MainActivityViewModel(): ViewModel() {
 
@@ -46,6 +50,21 @@ class MainActivityViewModel(): ViewModel() {
             }
         }
 
+    }
+
+    fun healHeroe(pos: Int) {
+        heroes[pos].vidaRestante = heroes[pos].vidaRestante + HEAL
+        if(heroes[pos].vidaRestante > heroes[pos].vidaTotal){
+            heroes[pos].vidaRestante = heroes[pos].vidaTotal
+        }
+    }
+
+    fun damageHeroe(pos: Int) {
+        val damage = Random.nextInt(MIN_DAMAGE, MAX_DAMAGE)
+        heroes[pos].vidaRestante = heroes[pos].vidaRestante - damage
+        if(heroes[pos].vidaRestante <= 0) {
+            heroes[pos].vidaRestante = 0
+        }
     }
 
 

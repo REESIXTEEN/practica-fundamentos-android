@@ -7,18 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.fragment.app.viewModels
 import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.FragmentFightBinding
 import com.example.practica_fundamentos_android.main.MainActivity
 import com.example.practica_fundamentos_android.main.MainActivityViewModel
 import com.example.practica_fundamentos_android.model.Heroe
 import com.squareup.picasso.Picasso
-import kotlin.random.Random
 
-const val HEAL = 20
-const val MIN_DAMAGE = 10
-const val MAX_DAMAGE = 60
 
 class FragmentFight(private val viewModel: MainActivityViewModel, private val pos: Int) : Fragment() {
 
@@ -34,7 +29,6 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
         (requireActivity() as MainActivity).binding.toolbar.title = heroe.name
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            updateHeroeData()
             goBack()
         }
     }
@@ -58,41 +52,22 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
         updateUI()
 
         binding.healBtn.setOnClickListener {
-            healHeroe()
+            viewModel.healHeroe(pos)
             updateUI()
         }
 
         binding.damageBtn.setOnClickListener {
-            damageHeroe()
+            viewModel.damageHeroe(pos)
             updateUI()
+            if(heroe.vidaRestante == 0) goBack()
         }
 
     }
 
-    private fun updateHeroeData() {
-        viewModel.heroes[pos].vidaRestante = heroe.vidaRestante
-    }
 
     private fun updateUI() {
         binding.progressBarLife.progress = heroe.vidaRestante
         binding.lifeText.text = "Vida ${heroe.vidaRestante} / ${heroe.vidaTotal}"
-    }
-
-    private fun healHeroe(){
-        heroe.vidaRestante = heroe.vidaRestante + HEAL
-        if(heroe.vidaRestante > heroe.vidaTotal){
-            heroe.vidaRestante = heroe.vidaTotal
-        }
-    }
-
-    private fun damageHeroe(){
-        val damage = Random.nextInt(MIN_DAMAGE, MAX_DAMAGE)
-        heroe.vidaRestante = heroe.vidaRestante - damage
-        if(heroe.vidaRestante <= 0){
-            heroe.vidaRestante = 0
-            updateHeroeData()
-            goBack()
-        }
     }
 
     private fun goBack(){

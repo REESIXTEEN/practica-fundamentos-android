@@ -7,14 +7,18 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Credentials
+import okhttp3.HttpUrl
 
 const val LIFE = 100
 
 class Network {
 
+    private val  urlLogin = "https://dragonball.keepcoding.education//api/auth/login"
+    private val urlHeroes = "https://dragonball.keepcoding.education/api/heros/all"
+
     fun login(email: String, password: String): String {
         val client = OkHttpClient()
-        val url = "https://dragonball.keepcoding.education//api/auth/login"
+        val url = urlLogin
         val requestBody = FormBody.Builder().build()
         val auth = Credentials.basic(email, password)
         val request = Request.Builder()
@@ -34,7 +38,7 @@ class Network {
 
     fun getHeroes(token: String): List<Heroe> {
         val client = OkHttpClient()
-        val url = "https://dragonball.keepcoding.education/api/heros/all"
+        val url = urlHeroes
         val requestBody = FormBody.Builder()
             .add("name", "")
             .build()
@@ -53,7 +57,6 @@ class Network {
             return dtoHeroes.toList().map { Heroe(it.name, it.photo, LIFE, LIFE) }
         }
         else throw Exception("Error code: ${response.code}")
-
 
     }
 
