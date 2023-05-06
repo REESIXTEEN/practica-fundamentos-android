@@ -10,6 +10,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import com.example.practica_fundamentos_android.R
 import com.example.practica_fundamentos_android.databinding.FragmentFightBinding
+import com.example.practica_fundamentos_android.main.MainActivity
 import com.example.practica_fundamentos_android.main.MainActivityViewModel
 import com.example.practica_fundamentos_android.model.Heroe
 import com.squareup.picasso.Picasso
@@ -26,6 +27,8 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (requireActivity() as MainActivity).binding.restartBtn.visibility = View.GONE
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             updateHeroeData()
@@ -92,6 +95,7 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
 
     private fun goBack(){
         requireActivity().supportFragmentManager.popBackStack()
+        (requireActivity() as MainActivity).binding.restartBtn.visibility = View.VISIBLE
 
     }
 
