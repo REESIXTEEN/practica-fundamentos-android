@@ -74,12 +74,9 @@ class FragmentTable(private val viewModel: MainActivityViewModel) : Fragment(), 
         }
 
         (requireActivity() as MainActivity).binding.restartBtn.setOnClickListener {
-            for (heroe in viewModel.heroes){
-                heroe.vidaRestante = LIFE
-            }
+            viewModel.restartAll()
             adapter.notifyDataSetChanged()
         }
-
 
     }
 

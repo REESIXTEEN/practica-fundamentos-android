@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel: ViewModel() {
 
-    private val network: Network = Network()
+    val network: Network = Network()
 
     lateinit  var  email: String
     lateinit  var  password: String

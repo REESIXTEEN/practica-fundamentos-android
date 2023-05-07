@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practica_fundamentos_android.model.Heroe
+import com.example.practica_fundamentos_android.network.LIFE
 import com.example.practica_fundamentos_android.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +20,8 @@ const val MAX_DAMAGE = 60
 
 class MainActivityViewModel(): ViewModel() {
 
-    private val network: Network = Network()
-    private lateinit var token: String
+    val network: Network = Network()
+    lateinit var token: String
     var heroes: List<Heroe> = listOf()
 
     private val _mainStatus = MutableStateFlow<MainStatus>(MainStatus.Loading)
@@ -66,6 +67,12 @@ class MainActivityViewModel(): ViewModel() {
         heroe.vidaRestante = heroe.vidaRestante - damage
         if(heroe.vidaRestante <= 0) {
             heroe.vidaRestante = 0
+        }
+    }
+
+    fun restartAll() {
+        for (heroe in heroes){
+            heroe.vidaRestante = LIFE
         }
     }
 

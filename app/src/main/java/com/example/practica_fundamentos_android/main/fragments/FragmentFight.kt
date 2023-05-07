@@ -64,7 +64,6 @@ class FragmentFight(private val viewModel: MainActivityViewModel, private val po
 
     }
 
-
     private fun updateUI() {
         binding.progressBarLife.progress = heroe.vidaRestante
         binding.lifeText.text = "Vida ${heroe.vidaRestante} / ${heroe.vidaTotal}"

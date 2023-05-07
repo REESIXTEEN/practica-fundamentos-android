@@ -8,21 +8,22 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Credentials
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 const val LIFE = 100
 
 class Network {
 
-    private val  urlLogin = "https://dragonball.keepcoding.education//api/auth/login"
-    private val urlHeroes = "https://dragonball.keepcoding.education/api/heros/all"
+    //Esto lo he hecho así para poder mockear de una forma sencilla (por falta de tiempo)
+    var urlLogin = "https://dragonball.keepcoding.education//api/auth/login".toHttpUrlOrNull()
+    var urlHeroes = "https://dragonball.keepcoding.education/api/heros/all".toHttpUrlOrNull()
 
     fun login(email: String, password: String): String {
         val client = OkHttpClient()
-        val url = urlLogin
         val requestBody = FormBody.Builder().build()
         val auth = Credentials.basic(email, password)
         val request = Request.Builder()
-            .url(url)
+            .url(urlLogin!!)
             .post(requestBody)
             .addHeader("Authorization", auth)
             .build()
@@ -38,13 +39,12 @@ class Network {
 
     fun getHeroes(token: String): List<Heroe> {
         val client = OkHttpClient()
-        val url = urlHeroes
         val requestBody = FormBody.Builder()
             .add("name", "")
             .build()
 
         val request = Request.Builder()
-            .url(url)
+            .url(urlHeroes!!)
             .post(requestBody)
             .addHeader("Authorization", "Bearer $token")
             .build()
